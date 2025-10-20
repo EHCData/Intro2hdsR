@@ -1,0 +1,7 @@
+"0","library(here)"
+"2","Warning: package ‘here’ was built under R version 4.4.3"
+"2","here() starts at C:/Users/ECliffe ABDN/OneDrive/Documents/IntroHDS/GitHub/Intro2hdsR
+"
+"0","fev_data <- read_csv(here(""fev.csv""))"
+"2","Error: 'C:/Users/ECliffe ABDN/OneDrive/Documents/IntroHDS/GitHub/Intro2hdsR/fev.csv' does not exist.
+"
