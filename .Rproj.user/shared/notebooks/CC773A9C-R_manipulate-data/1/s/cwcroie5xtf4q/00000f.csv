@@ -1,0 +1,24 @@
+"0","library(readr)"
+"2","Warning: package ‘readr’ was built under R version 4.4.3"
+"0","library(tidyr)"
+"2","Warning: package ‘tidyr’ was built under R version 4.4.3"
+"0","library(dplyr)"
+"2","Warning: package ‘dplyr’ was built under R version 4.4.3"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(here)"
+"2","Warning: package ‘here’ was built under R version 4.4.3"
+"2","here() starts at C:/Users/ECliffe ABDN/OneDrive/Documents/IntroHDS/GitHub/Intro2hdsR
+"

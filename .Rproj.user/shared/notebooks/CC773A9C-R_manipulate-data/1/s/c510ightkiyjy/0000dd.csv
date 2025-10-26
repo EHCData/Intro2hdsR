@@ -1,0 +1,5 @@
+"0","fev_data$age <- factor(fev_data$age)"
+"0","fev_data$smoke <- factor(fev_data$smoke)"
+"0","fev_data %>% filter(sex==0) %>%  "
+"0","  ggplot() +"
+"0","  geom_boxplot(aes(x = age, y = fev, colour = smoke))"

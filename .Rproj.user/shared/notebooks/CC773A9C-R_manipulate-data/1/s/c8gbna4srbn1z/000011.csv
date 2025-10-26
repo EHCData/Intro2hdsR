@@ -1,0 +1,5 @@
+"0",""
+"0","fev_data %>%"
+"0","  group_by(age) %>%"
+"0","  summarise(n(), mean(fev)) %>%"
+"0","  arrange(desc(age)) # arrange by decreasing age"

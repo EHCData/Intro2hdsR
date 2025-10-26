@@ -1,0 +1,2 @@
+"0","fev_data %>%"
+"0","  filter(age == 14 & smoke !=0)   # age is 14 AND smoker"
