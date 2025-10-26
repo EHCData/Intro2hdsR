@@ -1,0 +1,186 @@
+---
+title: "Hip Replacement Exercise week 6"
+author: "Emma Cliffe"
+date: "2025-10-26"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Aim
+
+1. Plot 'EQ-5D Index' scores pre and post operation for each gender
+2. Calculate how many patients in this dataset have been told by a doctor that they have problems caused by a stroke
+3. Create a clean and tidy table with pre and post operation activity levels
+
+## Load packages
+
+
+```{r load-packages}
+library(tidyverse)
+library(here)
+```
+
+## Read in data
+
+```{r read-data}
+hip_data <- read_csv(here("./Inputs/Hip Replacement CCG 1819.csv"))
+head(hip_data)
+```
+
+## Prepare the data
+
+### Inspect
+```{r inspect-data}
+glimpse(hip_data)
+```
+
+## Plot 'EQ-5D Index' scores pre and post operation for each gender
+
+### Select variables
+
+I need gender, pre and post EQ-5D Index
+
+```{r select-gender-eq5d}
+gender_EQ5D <- hip_data %>%
+  select(`Gender`,`Pre-Op Q EQ5D Index`,`Post-Op Q EQ5D Index`) %>%
+  rename(Gender  = `Gender`,
+         EQ5D_Pre = `Pre-Op Q EQ5D Index`,
+         EQ5D_Post = `Post-Op Q EQ5D Index`
+         )
+
+head(gender_EQ5D)
+```
+
+
+### Deal with missing values
+
+```{r missing-values-gender-eq5d}
+gender_EQ5D$Gender %>% unique()
+gender_EQ5D$Gender %>% table()
+gender_EQ5D %>% summary()
+
+gender_EQ5D_noNA <- gender_EQ5D %>%
+  drop_na() %>%
+  filter(Gender !='*')
+
+table(gender_EQ5D_noNA$Gender)
+summary(gender_EQ5D_noNA)
+```
+
+### Make data tidy
+
+```{r tidy-data-gender}
+head(gender_EQ5D_noNA)
+
+tidy_gender_EQ5D_noNA <- gender_EQ5D_noNA %>%
+  pivot_longer(c(EQ5D_Pre,EQ5D_Post),
+               names_to = 'Time',   # the name of the column to create from the data stored in the original column names
+               names_prefix = 'EQ5D_',  # remove this text from the start of each variable name
+               values_to = 'EQ5D' # the name of the column to create from the data stored in cell values
+               )
+
+head(tidy_gender_EQ5D_noNA)
+  
+```
+
+### Answer the question
+
+```{r plot-gender-eq5d}
+
+# Turn Time into a "factor" so we can order the categories any way we want
+# otherwise they are alphabetical and "Post" ends up before "Pre"
+tidy_gender_EQ5D_noNA$Time <- factor(tidy_gender_EQ5D_noNA$Time,levels=c('Pre','Post'))
+
+# ggplot creates a blank canvas, to which we add a boxplot with "geom_boxplot"
+tidy_gender_EQ5D_noNA %>%
+  ggplot() +
+  geom_boxplot(aes(x = Time, y = EQ5D, colour = Gender))
+```
+
+## Calculate how many patients in this dataset have been told by a doctor that they have problems caused by a stroke
+
+### Select variable
+
+```{r select-stroke}
+stroke <- hip_data %>%
+  select(`Stroke`) 
+
+head(stroke)
+```
+
+### Deal with missing data
+
+```{r missing-values-stroke}
+stroke$Stroke %>% unique()
+#Only contains 9 or 1 and 1 means yes
+stroke_noNA <- stroke %>%
+  drop_na() %>%
+  filter(Stroke !='9')
+
+table(stroke_noNA$Stroke)
+summary(stroke_noNA)
+
+```
+
+### Make data tidy
+
+Stroke has only one variable, it is tidy
+
+### Answer the question
+
+```{r stroke-number}
+length(stroke_noNA$Stroke)
+```
+
+## Create a clean and tidy table with pre and post operation activity levels
+
+### Select variables
+
+```{r select-activity}
+activity <- hip_data %>%
+  select(`Pre-Op Q Activity`,`Post-Op Q Activity`) %>%
+  rename(Activity_Pre = `Pre-Op Q Activity`,
+         Activity_Post = `Post-Op Q Activity`
+         )
+
+head(activity)
+```
+
+### Deal with missing data
+
+```{r missing-value-activity}
+activity$Activity_Pre %>% unique()
+activity$Activity_Post %>% unique()
+#9 is missing
+activity_noNA <- activity %>% 
+  drop_na() %>% 
+  filter(Activity_Pre != '9') %>% 
+  filter(Activity_Post != '9')
+
+table(activity_noNA$Activity_Pre)
+table(activity_noNA$Activity_Post)
+summary(activity_noNA)
+```
+
+### Make tidy
+
+```{r tidy-activity}
+head(activity_noNA)
+
+tidy_activity_noNA <- activity_noNA %>%
+  pivot_longer(c(Activity_Pre,Activity_Post),
+               names_to = 'Time',   # the name of the column to create from the data stored in the original column names
+               names_prefix = 'Activity_',  # remove this text from the start of each variable name
+               values_to = 'Activity' # the name of the column to create from the data stored in cell values
+               )
+
+head(tidy_activity_noNA)
+
+```
+
